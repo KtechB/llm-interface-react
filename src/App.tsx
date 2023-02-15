@@ -34,7 +34,7 @@ function App() {
       <div className='flex flex-col h-full w-full items-center'>
         <div
           className={clsx(
-            'flex flex-col justify-center h-full w-5/6 gap-5 p-5'
+            'flex flex-col justify-center h-full w-5/6 max-w-screen-md gap-5 p-5'
           )}
         >
           <Dialog messages={messages} />

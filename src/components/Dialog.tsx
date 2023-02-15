@@ -10,7 +10,7 @@ export type Message = {
 
 export default function Dialog({ messages }: DialogProps) {
   return (
-    <ul className='flex flex-col h-full w-full '>
+    <ul className=' flex flex-col h-full w-full gap-2'>
       {messages.map((message) => (
         <li
           className={clsx(
@@ -20,9 +20,9 @@ export default function Dialog({ messages }: DialogProps) {
           key={message.text}
         >
           <div
-            className={
-              'relative max-w-xl px-4 py-2  rounded shadow dark:bg-gray-800'
-            }
+            className={clsx(
+              'relative max-w-[80%] px-4 py-2  rounded shadow dark:bg-gray-800'
+            )}
           >
             <span className='block'>{message.text}</span>
           </div>
