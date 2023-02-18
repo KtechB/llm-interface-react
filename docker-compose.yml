@@ -1,0 +1,17 @@
+version: "3.7"
+
+services:
+  openapi-generator:
+    image: openapitools/openapi-generator-cli
+    volumes:
+      - ./:/frontend
+    working_dir: /frontend
+    command:
+      - generate
+      - -g
+      - typescript-axios
+      - -i
+      - ./openapi.json
+      - -o
+      - /frontend/src/api-client
+      - --additional-properties=supportsES6=true,modelPropertyNaming=original

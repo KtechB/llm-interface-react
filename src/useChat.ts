@@ -14,10 +14,9 @@ export const useChat = (apiClient: DefaultApi) => {
     },
     [setMessages]
   )
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const onSubmit = useCallback(() => {
     setMessages((ms) => [...ms, { speakerId: 1, text: inputText }])
-    apiClient.runDummyLlmPost({ text: inputText }).then((x) => {
+    apiClient.runLlmLlmPost({ text: inputText }).then((x) => {
       addMessage(0, x.data.text)
     })
     setInputText('')
