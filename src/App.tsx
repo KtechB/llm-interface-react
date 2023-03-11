@@ -4,13 +4,14 @@ import { DefaultApi, Configuration } from './api-client'
 import Button from './components/Button'
 import Dialog from './components/Dialog'
 import Header from './components/Header'
-import { useChat } from './useChat'
+import { useChatSocket } from './useChatSocket'
 
 const config = new Configuration({ basePath: 'http://localhost:8000' }) // TODO: This is for dev
 export const apiClient = new DefaultApi(config)
 
 function App() {
-  const { inputText, setInputText, messages, onSubmit } = useChat(apiClient)
+  // const { inputText, setInputText, messages, onSubmit } = useChat(apiClient)
+  const { inputText, setInputText, messages, onSubmit } = useChatSocket()
   return (
     <div className='flex flex-col h-full w-full justify-center'>
       <Header />
