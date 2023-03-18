@@ -1,5 +1,8 @@
 import clsx from 'clsx'
 
+import MarkdownRenderer from './MarkdonwRenderer'
+import { CodeBlock } from './CodeBlock'
+
 export type DialogProps = {
   messages: Message[]
 }
@@ -24,7 +27,9 @@ export default function Dialog({ messages }: DialogProps) {
               'relative max-w-[80%] px-4 py-2  rounded shadow dark:bg-gray-800'
             )}
           >
-            <span className='block'>{message.text}</span>
+            <span className='block prose prose-xl'>
+              <MarkdownRenderer markdown={message.text} />
+            </span>
           </div>
         </li>
       ))}
