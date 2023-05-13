@@ -31,10 +31,14 @@ export const useChatSocket = () => {
       websocket.removeEventListener('message', onMessage)
     }
   }, [])
-  const onSubmit = useCallback(() => {
-    setMessages((ms) => [...ms, { speakerId: 1, text: inputText }])
-    socketRef.current?.send(inputText)
-    setInputText('')
-  }, [addMessage, setInputText, inputText])
+  const onSubmit = useCallback(
+    (sendText: string = inputText) => {
+      setMessages((ms) => [...ms, { speakerId: 1, text: sendText }])
+      console.log(sendText)
+      socketRef.current?.send(sendText)
+      setInputText('')
+    },
+    [addMessage, setInputText, inputText]
+  )
   return { inputText, setInputText, messages, onSubmit }
 }

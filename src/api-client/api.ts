@@ -85,6 +85,19 @@ export interface ValidationError {
      */
     'type': string;
 }
+/**
+ * 
+ * @export
+ * @interface WhisperResponse
+ */
+export interface WhisperResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof WhisperResponse
+     */
+    'text': string;
+}
 
 /**
  * DefaultApi - axios parameter creator
@@ -158,6 +171,47 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary Text To Speech
+         * @param {any} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        textToSpeechWhisperPost: async (file: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'file' is not null or undefined
+            assertParamExists('textToSpeechWhisperPost', 'file', file)
+            const localVarPath = `/whisper/`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+            const localVarFormParams = new ((configuration && configuration.formDataCtor) || FormData)();
+
+
+            if (file !== undefined) { 
+                localVarFormParams.append('file', file as any);
+            }
+    
+    
+            localVarHeaderParameter['Content-Type'] = 'multipart/form-data';
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = localVarFormParams;
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -189,6 +243,17 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.runLlmLlmPost(message, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
+        /**
+         * 
+         * @summary Text To Speech
+         * @param {any} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async textToSpeechWhisperPost(file: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<WhisperResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.textToSpeechWhisperPost(file, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
     }
 };
 
@@ -217,6 +282,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         runLlmLlmPost(message: Message, options?: any): AxiosPromise<LLMResponse> {
             return localVarFp.runLlmLlmPost(message, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary Text To Speech
+         * @param {any} file 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        textToSpeechWhisperPost(file: any, options?: any): AxiosPromise<WhisperResponse> {
+            return localVarFp.textToSpeechWhisperPost(file, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -249,6 +324,18 @@ export class DefaultApi extends BaseAPI {
      */
     public runLlmLlmPost(message: Message, options?: AxiosRequestConfig) {
         return DefaultApiFp(this.configuration).runLlmLlmPost(message, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary Text To Speech
+     * @param {any} file 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public textToSpeechWhisperPost(file: any, options?: AxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).textToSpeechWhisperPost(file, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -11,13 +11,20 @@ import { useChatSocket } from './useChatSocket'
 const config = new Configuration({ basePath: 'http://localhost:8000' }) // TODO: This is for dev
 export const apiClient = new DefaultApi(config)
 
+const onTranscribe = async (blob: Blob) => {
+  const f = new File([blob], 'a.wav')
+  const result = await apiClient.textToSpeechWhisperPost(f)
+  const text = result.data.text
+  // you must return result from your server in Transcript format
+  return {
+    blob,
+    text,
+  }
+}
+
 function App() {
   // const { inputText, setInputText, messages, onSubmit } = useChat(apiClient)
   const { inputText, setInputText, messages, onSubmit } = useChatSocket()
-  const [apiKey, setApiKey] = useState<string>('')
-
-  const key = apiKey === '' ? 'noapikey' : apiKey
-  console.log(key)
   const {
     recording,
     speaking,
@@ -26,14 +33,18 @@ function App() {
     startRecording,
     stopRecording,
   } = useWhisper({
-    apiKey: key, // YOUR_OPEN_AI_TOKEN
-    // streaming: true,
     // timeSlice: 1_000, // 1 second
+    onTranscribe,
     whisperConfig: {
       language: 'ja',
     },
   })
-  useEffect(() => setInputText(transcript.text ?? inputText), [transcript.text])
+  useEffect(() => {
+    setInputText(transcript.text ?? inputText)
+    if (transcript.text) {
+      onSubmit(transcript.text)
+    }
+  }, [transcript.text])
 
   return (
     <div className='flex flex-col h-full w-full justify-center'>
@@ -61,8 +72,8 @@ function App() {
             <button
               className={clsx('active:bg-red-700')}
               onMouseDown={startRecording}
-              onMouseUp={() => {
-                stopRecording().then(() => onSubmit())
+              onMouseUp={async () => {
+                stopRecording()
               }}
             >
               <svg
@@ -80,11 +91,6 @@ function App() {
                 />
               </svg>
             </button>
-            <input
-              type='password'
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-            />
           </div>
         </div>
       </div>
